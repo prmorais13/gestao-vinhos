@@ -1,27 +1,35 @@
 import { Injectable } from '@angular/core';
-import {Vinho} from '../models/vinho';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+
+import { Vinho } from '../models/vinho';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VinhosService {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
-  listar(): Array<Vinho> {
-    let vinhos = new Array<Vinho>();
-
-    vinhos.push(this.criarVinho(1, `Casillerro Del Diabo`, "Tinto", "Cabernet Sauvignon", "Paulo", "Chile", 2010));
-    vinhos.push(this.criarVinho(2, "Casillerro Del Diabo", "Tinto", "Merlot", "Concha y Toro", "Chile", 2015));
-
-    return vinhos;
+  getVinhos(): Observable<Vinho[]> {
+    return this.http.get<Vinho[]>('api/vinhos')
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
-  private criarVinho(id: number, nome: string, classificacao: string, uva: string,
-                     fabricante: string, paisOrigem: string, anoSafra: number) {
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      console.error('Ocorreu um erro', error.error.message);
+    } else {
+      console.error(
+        `O Backend retornou o código ${error.status}, o corpo foi: ${error.error}`
+      );
+    }
 
-    let vinho: Vinho;
-    vinho = new Vinho(id, nome, classificacao, uva, fabricante, paisOrigem, anoSafra);
-    return vinho;
+    return throwError('Ocorreu um erro, tente novamente!');
   }
 }

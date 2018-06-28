@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import {Vinho} from '../../models/vinho';
 import {VinhosService} from '../../services/vinhos.service';
 
@@ -16,7 +17,10 @@ export class VinhosComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.vinhos = this.vinhosService.listar();
+    this.vinhosService.getVinhos()
+      .subscribe(response => {
+        this.vinhos = response;
+      });
   }
 
 }
