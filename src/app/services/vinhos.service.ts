@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 
 import { Vinho } from '../models/vinho';
-import { catchError } from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'Application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +22,14 @@ export class VinhosService {
     return this.http.get<Vinho[]>('api/vinhos')
       .pipe(
         catchError(this.handleError)
+      );
+  }
+
+  cadastrarVinho(vinho: Vinho): Observable<Vinho> {
+    return this.http.post<Vinho>('api/vinhos', vinho, httpOptions)
+      .pipe(
+          tap((vinho: Vinho) => console.log(`Vinho adicionado com Id=${vinho.id}`)),
+          catchError(this.handleError)
       );
   }
 

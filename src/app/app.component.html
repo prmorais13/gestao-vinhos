@@ -1,18 +1,15 @@
 <ul class="nav">
   <li class="nav-item">
-    <a class="nav-link active" href="#">Active</a>
+    <a class="nav-link active" href="#">Gestão de Vinhos</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" href="#" routerLink="/vinhos" routerLinkActive="active">Listagem de vinhos</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" href="#">Disabled</a>
+    <a class="nav-link" href="#" routerLink="/cadastro-vinho" routerLinkActive="active">Cadastro de vinho</a>
   </li>
 </ul>
 
 <div class="container">
-  <app-vinhos></app-vinhos>
+  <router-outlet></router-outlet>
 </div>
